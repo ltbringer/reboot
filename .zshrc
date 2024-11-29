@@ -109,30 +109,3 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 export PATH="$PATH:/$HOME/secrets"
-
-function bw_login() {
-    SECRET=$1
-    export BW_CLIENTSECRET=$(gpg --decrypt $1 | jq -r '.client_secret')
-    export BW_CLIENTID=$(gpg --decrypt $1 | jq -r '.client_id')
-    bw login --apikey
-    unset BW_CLIENTID
-    unset BW_CLIENTSECRET
-    export BW_SESSION=$(bw unlock --raw)
-}
-
-function bw_update_session() {
-    export BW_SESSION=$(bw unlock --raw)
-}
-
-function bw_get_ssh_keys() {
-    folder_id=$(bw list folders | jq -r '.[] | select (.name == "ssh") | .id')
-    items=$(bw list items --folderid "$folder_id")
-    item_id=$(echo "$items" | jq -r '.[].id')
-    attachments=$(echo "$items" | jq '[.[].attachments[] | {attachment_id: .id, file_name: .fileName}]')
-
-    for row in $(echo "$attachments" | jq -c '.[]'); do
-        attachment_id=$(echo "$row" | jq -r '.attachment_id')
-        file_name=$(echo "$row" | jq -r '.file_name')
-        bw get attachment "$attachment_id" --itemid "$item_id" --output ~/.ssh/${file_name}
-    done
-}
