@@ -3,7 +3,8 @@
 # Default values
 GO_VERSION=${1:-"1.23.3"}
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
-CUSTOM_ZSHRC_PATH="$SCRIPT_DIR/.zshrc"
+PARENT_DIR=$(dirname "$SCRIPT_DIR")
+CUSTOM_ZSHRC_PATH="$PARENT_DIR/.zshrc"
 ZSHRC_PATH="${HOME}/.zshrc"
 
 function check_git_installed() {
