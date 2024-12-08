@@ -19,7 +19,31 @@ function install_dot_file_zshrc() {
 
 function install_base_libs_apt() {
   sudo apt update -y
-  sudo apt install -y gcc wget curl pipx jq unzip zsh
+  sudo apt install -y \
+    build-essential \
+    libssl-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libffi-dev \
+    libnss3-dev \
+    libncurses5-dev \
+    libncursesw5-dev \
+    libgdbm-dev \
+    libgdbm-compat-dev \
+    uuid-dev \
+    tk-dev \
+    xz-utils \
+    curl \
+    liblzma-dev \
+    gcc \ 
+    wget \
+    curl \
+    pipx \
+    jq \
+    unzip \
+    zsh
 }
 
 function install_omzsh() {
