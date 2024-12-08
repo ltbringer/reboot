@@ -109,3 +109,4 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 export PATH="$PATH:/$HOME/secrets"
+export PATH="$PATH:/$HOME/.local/bin"
