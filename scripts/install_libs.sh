@@ -35,6 +35,8 @@ function install_base_libs_apt() {
     uuid-dev \
     tk-dev \
     xz-utils \
+    gdb \
+    cmake \
     curl \
     liblzma-dev \
     gcc \ 
