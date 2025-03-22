@@ -38,7 +38,7 @@ function install_base_libs_apt() {
     cmake \
     curl \
     liblzma-dev \
-    gcc \ 
+    gcc \
     wget \
     curl \
     pipx \
