@@ -1,6 +1,7 @@
 GO_VERSION ?= 1.23.3
 BW_SECRETS_PATH ?= ""
 BW_PWD_PATH ?= ""
+BW_SECRETS_FOLDER ?= ""
 
 .PHONY: all
 all: install_libs download_secrets set_zsh_default
@@ -22,8 +23,12 @@ ifeq ($(BW_SECRETS_PATH), "")
 	@echo "Error: BW_SECRETS_PATH is not set. Please provide the path to the Bitwarden secrets file." >&2
 	@exit 1
 endif
+ifeq ($(BW_SECRETS_FOLDER), "")
+	@echo "Error: BW_SECRETS_FOLDER is not set. Provide the folder used in Bitwarden." >&2
+	@exit 1
+endif
 	@echo "Downloading secrets using Bitwarden..."
-	bash scripts/download_secrets.sh $(BW_SECRETS_PATH) $(BW_PWD_PATH)
+	bash scripts/download_secrets.sh $(BW_SECRETS_PATH) $(BW_PWD_PATH) $(BW_SECRETS_FOLDER)
 
 # Help target to display usage
 .PHONY: help
