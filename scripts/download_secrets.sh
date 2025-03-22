@@ -58,17 +58,22 @@ function bw_login() {
     rm "$temp_file"
 }
 
-function bw_get_ssh_keys() {
-    folder_id=$(bw list folders | jq -r '.[] | select (.name == "ssh") | .id')
-    items=$(bw list items --folderid "$folder_id")
-    item_id=$(echo "$items" | jq -r '.[].id')
-    attachments=$(echo "$items" | jq '[.[].attachments[] | {attachment_id: .id, file_name: .fileName}]')
+function bw_get_secrets() {
+  folder_id=$(bw list folders | jq -r '.[] | select (.name == "ssh") | .id')
+  items=$(bw list items --folderid "$folder_id")
 
-    for row in $(echo "$attachments" | jq -c '.[]'); do
-        attachment_id=$(echo "$row" | jq -r '.attachment_id')
-        file_name=$(echo "$row" | jq -r '.file_name')
-        bw get attachment "$attachment_id" --itemid "$item_id" --output ~/.ssh/"${file_name}"
-    done
+  if [ ! -d "$HOME/.ssh" ]; then
+    mkdir -p "$HOME/.ssh"
+  fi
+
+  echo "$items" | jq -r --arg home "$HOME" '
+    .[]
+    | .id as $item_id
+    | .attachments[]
+    | "bw get attachment \(.id) --itemid \($item_id) --output \($home)/.ssh/\(.fileName)"
+  ' | while IFS= read -r cmd; do
+    eval "$cmd"
+  done
 }
 
 download_cli
@@ -80,4 +85,4 @@ rm -f "$ZIP_FILE"
 
 check_bw_secrets_path
 bw_login "$BW_SECRETS_PATH"
-bw_get_ssh_keys
+bw_get_secrets
