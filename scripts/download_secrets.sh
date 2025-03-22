@@ -2,6 +2,7 @@
 
 BW_SECRETS_PATH=$1
 BW_PWD=$2
+BW_SECRETS_FOLDER=$3
 BW_DOWNLOAD_URL="https://vault.bitwarden.com/download/?app=cli&platform=linux"
 INSTALL_DIR="$HOME/packages"  # Adjust the installation directory if needed
 ZIP_FILE="/tmp/bw-cli.zip"
@@ -59,7 +60,7 @@ function bw_login() {
 }
 
 function bw_get_secrets() {
-  folder_id=$(bw list folders | jq -r '.[] | select (.name == "ssh") | .id')
+  folder_id=$(bw list folders | jq -r '.[] | select (.name == "$BW_SECRETS_FOLDER") | .id')
   items=$(bw list items --folderid "$folder_id")
 
   if [ ! -d "$HOME/.ssh" ]; then
