@@ -28,8 +28,7 @@ function install_base_libs_apt() {
     libsqlite3-dev \
     libffi-dev \
     libnss3-dev \
-    libncurses5-dev \
-    libncursesw5-dev \
+    libncurses-dev \
     libgdbm-dev \
     libgdbm-compat-dev \
     uuid-dev \
